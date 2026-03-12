@@ -1,0 +1,43 @@
+{
+  "investigationType": "terrorism",
+  "manualMode": "terrorism",
+  "nodes": [
+    { "id": "p1", "type": "personNode", "position": { "x": 600, "y": 100 }, "data": { "label": "Abu Musab (Target)", "role": "Commander", "personStatus": "suspect", "aliases": "The Engineer, One-Eye", "image": "https://randomuser.me/api/portraits/men/32.jpg", "notes": "High Value Target. Expert in IED manufacturing.", "evidenceSource": "Intel Report #992" } },
+    { "id": "p2", "type": "personNode", "position": { "x": 850, "y": 150 }, "data": { "label": "Mallam Yusuf", "role": "Recruiter", "personStatus": "suspect", "aliases": "Teacher", "image": "https://randomuser.me/api/portraits/men/45.jpg", "notes": "Operates out of local madrassas.", "evidenceSource": "Informant Alpha" } },
+    { "id": "p3", "type": "personNode", "position": { "x": 350, "y": 150 }, "data": { "label": "Sgt. Danjuma", "role": "Corrupt Official", "personStatus": "suspect", "aliases": "", "image": "https://randomuser.me/api/portraits/men/22.jpg", "notes": "Suspected of leaking troop movements.", "evidenceSource": "Internal Affairs" } },
+    { "id": "org1", "type": "personNode", "position": { "x": 600, "y": -50 }, "data": { "label": "ISWAP Lake Chad Cell", "type": "organization", "role": "Terrorist Group", "personStatus": "unknown", "notes": "Affiliated with greater ISWAP network." } },
+    
+    { "id": "loc1", "type": "eventNode", "position": { "x": 600, "y": 300 }, "data": { "label": "Sambisa Forest Camp Zero", "type": "location", "location": "Sambisa Forest, Borno", "coordinates": { "lat": 11.55, "lng": 13.60 }, "evidenceSource": "Satellite Imagery", "reliability": 5 } },
+    { "id": "loc2", "type": "eventNode", "position": { "x": 900, "y": 300 }, "data": { "label": "Maiduguri Monday Market", "type": "location", "location": "Maiduguri, Borno", "coordinates": { "lat": 11.833, "lng": 13.150 }, "description": "Potential target for bombing.", "evidenceSource": "Intercepted Comms" } },
+    { "id": "loc3", "type": "eventNode", "position": { "x": 300, "y": 300 }, "data": { "label": "Baga Checkpoint", "type": "location", "location": "Baga Road", "coordinates": { "lat": 12.50, "lng": 13.50 }, "description": "Site of ambush.", "evidenceSource": "Patrol Report" } },
+
+    { "id": "ev1", "type": "eventNode", "position": { "x": 450, "y": 450 }, "data": { "label": "Recovered IED Components", "type": "evidence", "evidenceType": "physical", "location": "Farm Center", "evidenceSource": "EOD Unit", "reliability": 5, "description": "Ammonium nitrate and timers found." } },
+    { "id": "ev2", "type": "eventNode", "position": { "x": 750, "y": 450 }, "data": { "label": "Intercepted Call #442", "type": "communication", "evidenceType": "digital", "date": "2023-10-12T14:30:00", "medium": "GSM", "description": "Discussing 'wedding' (code for attack).", "reliability": 4 } },
+    { "id": "ev3", "type": "eventNode", "position": { "x": 600, "y": 600 }, "data": { "label": "Crypto Wallet Transfer", "type": "evidence", "amount": 15000000, "evidenceType": "digital", "description": "Funding received from external wallet.", "evidenceSource": "NFIU" } },
+
+    { "id": "evt1", "type": "eventNode", "position": { "x": 100, "y": 200 }, "data": { "label": "Ambush on Supply Convoy", "type": "event", "date": "2023-09-15T09:00:00", "location": "Konduga", "description": "3 trucks stolen, 5 casualties.", "evidenceSource": "SitRep" } },
+    { "id": "evt2", "type": "eventNode", "position": { "x": 1100, "y": 200 }, "data": { "label": "Recruitment Drive", "type": "event", "date": "2023-10-01T18:00:00", "location": "IDP Camp Outskirts", "evidenceSource": "HumInt" } },
+
+    { "id": "n1", "type": "noteNode", "position": { "x": 800, "y": 50 }, "data": { "label": "Abu Musab was seen in Kano last week. Verify travel logs.", "noteColor": "#fef3c7" } },
+    { "id": "n2", "type": "noteNode", "position": { "x": 400, "y": 600 }, "data": { "label": "The funding timeline matches the ambush date. Likely used to pay fighters.", "noteColor": "#dbeafe" } },
+
+    { "id": "p4", "type": "personNode", "position": { "x": 200, "y": 500 }, "data": { "label": "Witness: Amina B.", "role": "Witness", "personStatus": "witness", "image": "https://randomuser.me/api/portraits/women/68.jpg", "reliability": 3, "notes": "Saw the trucks enter the forest." } },
+    { "id": "org2", "type": "personNode", "position": { "x": 800, "y": 700 }, "data": { "label": "Al-Baraka Charity", "type": "organization", "role": "Front Organization", "notes": "NGO used for laundering funds." } }
+  ],
+  "edges": [
+    { "id": "e1", "source": "org1", "target": "p1", "label": "Leader", "animated": true, "style": { "stroke": "#ef4444" } },
+    { "id": "e2", "source": "p1", "target": "p2", "label": "Commands", "type": "deletable" },
+    { "id": "e3", "source": "p1", "target": "loc1", "label": "Base of Ops", "type": "deletable" },
+    { "id": "e4", "source": "p2", "target": "evt2", "label": "Organized", "type": "deletable" },
+    { "id": "e5", "source": "loc1", "target": "ev1", "label": "Origin of", "type": "deletable" },
+    { "id": "e6", "source": "p1", "target": "ev2", "label": "Speaker A", "type": "deletable", "style": { "stroke": "#eab308" } },
+    { "id": "e7", "source": "p2", "target": "ev2", "label": "Speaker B", "type": "deletable", "style": { "stroke": "#eab308" } },
+    { "id": "e8", "source": "p3", "target": "evt1", "label": "Leaked Route", "animated": true, "style": { "stroke": "#ef4444" } },
+    { "id": "e9", "source": "p1", "target": "p3", "label": "Paymaster", "type": "deletable" },
+    { "id": "e10", "source": "ev3", "target": "org2", "label": "Funneled Through", "type": "deletable" },
+    { "id": "e11", "source": "org2", "target": "org1", "label": "Financier", "animated": true },
+    { "id": "e12", "source": "p4", "target": "evt1", "label": "Witnessed", "type": "deletable" },
+    { "id": "e13", "source": "loc3", "target": "evt1", "label": "Location of", "type": "deletable" },
+    { "id": "e14", "source": "loc2", "target": "ev2", "label": "Mentioned Target", "type": "deletable", "style": { "stroke": "#ef4444", "strokeWidth": 3 } }
+  ]
+}

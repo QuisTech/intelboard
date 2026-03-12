@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Node, Edge } from '@xyflow/react';
 import { NodeData, PersonStatus, EvidenceType, NodeType } from '../types';
+<<<<<<< HEAD
 import { X, Save, Trash2, Link2, Type, AlertCircle, Shield, Star, UserCheck, ImagePlus, Map, Video, Mic, Paperclip, Layout, Plus } from 'lucide-react';
+=======
+import { X, Save, Trash2, Link2, Type, AlertCircle, Shield, Star, UserCheck, ImagePlus, Map, Video, Mic, Paperclip, Layout } from 'lucide-react';
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
 
 interface EditorPanelProps {
   selectedNode: Node | null;
@@ -23,8 +27,11 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
   deleteEdge 
 }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
+<<<<<<< HEAD
   // Refs for the 4 separate upload slots
   const slotRefs = useRef<(HTMLInputElement | null)[]>([]);
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
   
   // Form state for Nodes
   const [nodeFormData, setNodeFormData] = useState<NodeData>({
@@ -39,7 +46,10 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     reliability: 0,
     coordinates: { lat: 0, lng: 0 },
     image: '',
+<<<<<<< HEAD
     images: ['', '', '', ''], // Initialize 4 slots
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
     attachments: [],
     noteColor: '#fef3c7',
     type: 'event' // default for EventNodes
@@ -54,6 +64,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
   // Sync state when selection changes
   useEffect(() => {
     if (selectedNode) {
+<<<<<<< HEAD
       // Ensure images array has 4 slots
       let loadedImages = (selectedNode.data.images as string[]) || [];
       // Backward compatibility: if data.image exists but images array is empty, put it in slot 0
@@ -63,6 +74,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
       // Pad to 4
       while (loadedImages.length < 4) loadedImages.push('');
 
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       setNodeFormData({
         label: selectedNode.data.label as string || '',
         date: (selectedNode.data.date as string) || '',
@@ -76,7 +89,10 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         role: (selectedNode.data.role as string) || '',
         coordinates: (selectedNode.data.coordinates as any) || { lat: 0, lng: 0 },
         image: (selectedNode.data.image as string) || '',
+<<<<<<< HEAD
         images: loadedImages,
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         attachments: (selectedNode.data.attachments as any[]) || [],
         noteColor: (selectedNode.data.noteColor as string) || '#fef3c7',
         type: (selectedNode.data.type as string) || 'event'
@@ -120,11 +136,16 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     updateNode('coordinates', newCoords);
   };
 
+<<<<<<< HEAD
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index?: number) => {
+=======
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+<<<<<<< HEAD
         const result = reader.result as string;
         
         if (index !== undefined) {
@@ -141,11 +162,15 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
           // Legacy single upload (Person node)
           updateNode('image', result);
         }
+=======
+        updateNode('image', reader.result as string);
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       };
       reader.readAsDataURL(file);
     }
   };
 
+<<<<<<< HEAD
   const removeImage = (index: number) => {
     const newImages = [...(nodeFormData.images || ['', '', '', ''])];
     newImages[index] = '';
@@ -154,6 +179,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     updateNode('image', firstImage);
   };
 
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
   // Mock function for media attachments since we don't have backend storage for videos
   const addMockAttachment = (type: 'video' | 'audio') => {
     const newAttachment = {
@@ -247,7 +274,11 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
               </>
             ) : (
               <>
+<<<<<<< HEAD
                 {/* Image Upload for Persons (Single) */}
+=======
+                {/* Image Upload for Persons */}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
                 {selectedNode.type === NodeType.PERSON && (
                   <div className="flex items-center gap-4 p-3 bg-slate-800/50 rounded border border-slate-700">
                      <div 
@@ -259,7 +290,11 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                         ) : (
                           <ImagePlus className="w-6 h-6 text-slate-500 group-hover:text-amber-500" />
                         )}
+<<<<<<< HEAD
                         <input type="file" ref={imageInputRef} onChange={(e) => handleImageUpload(e)} accept="image/*" className="hidden" />
+=======
+                        <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
                      </div>
                      <div className="flex-1">
                         <div className="text-xs font-bold text-slate-300">Subject Photo</div>
@@ -288,6 +323,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                    </div>
                 )}
 
+<<<<<<< HEAD
                 {/* Multi-Image Upload for Events */}
                 {selectedNode.type === NodeType.EVENT && (
                   <div>
@@ -344,6 +380,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                   </div>
                 )}
 
+=======
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
                 <div>
                   <label className="block text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wide">
                     {selectedNode.type === NodeType.PERSON ? 'Name / Subject' : 'Title'}
@@ -499,6 +537,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                       placeholder="Address / Area Name"
                     />
                     <div className="flex gap-2">
+<<<<<<< HEAD
                        <div className="flex-1 relative">
                           <label className="absolute -top-1.5 left-2 bg-slate-900 px-1 text-[8px] text-slate-500 uppercase font-bold">Lat</label>
                           <input
@@ -523,6 +562,26 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                             step="0.000001"
                           />
                        </div>
+=======
+                       <input
+                        type="number"
+                        name="lat"
+                        value={nodeFormData.coordinates?.lat}
+                        onChange={handleCoordinatesChange}
+                        className="w-1/2 bg-slate-950 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder:text-slate-600"
+                        placeholder="Latitude"
+                        step="0.000001"
+                      />
+                      <input
+                        type="number"
+                        name="lng"
+                        value={nodeFormData.coordinates?.lng}
+                        onChange={handleCoordinatesChange}
+                        className="w-1/2 bg-slate-950 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder:text-slate-600"
+                        placeholder="Longitude"
+                        step="0.000001"
+                      />
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
                     </div>
                   </div>
                 )}

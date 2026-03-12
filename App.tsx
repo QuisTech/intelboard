@@ -550,6 +550,7 @@ const InvestigationCanvas = ({ onLogout }: { onLogout: () => void }) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
+<<<<<<< HEAD
         const rawContent = event.target?.result as string;
         const result = JSON.parse(rawContent);
 
@@ -653,6 +654,27 @@ const InvestigationCanvas = ({ onLogout }: { onLogout: () => void }) => {
       } catch (err) {
         console.error("File Load Error:", err);
         alert('Failed to parse case file. Check console for details.');
+=======
+        const result = JSON.parse(event.target?.result as string);
+        if (result.nodes && result.edges) {
+          takeSnapshot();
+          setNodes(result.nodes);
+          setEdges(result.edges);
+          if (result.investigationType) setManualMode(result.investigationType);
+          
+          // Clear old analysis to avoid data mismatch, user can hit "Report" to regen
+          setAnalysis(null);
+          setShowAnalysisPanel(false);
+          
+          setSimulationToast({ message: 'Case File Loaded Successfully', type: 'success' });
+          setTimeout(() => setSimulationToast(null), 3000);
+        } else {
+          alert('Invalid case file format');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Failed to parse case file');
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       }
     };
     reader.readAsText(file);

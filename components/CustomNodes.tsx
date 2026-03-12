@@ -15,9 +15,15 @@ interface BaseNodeWrapperProps {
 }
 
 // Wrapper for common node styling
+<<<<<<< HEAD
 const BaseNodeWrapper = ({ 
   children, 
   selected, 
+=======
+const BaseNodeWrapper = ({
+  children,
+  selected,
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
   headerColor,
   title,
   icon: Icon,
@@ -26,11 +32,19 @@ const BaseNodeWrapper = ({
   toolbarContent
 }: BaseNodeWrapperProps) => (
   <>
+<<<<<<< HEAD
     <NodeResizer 
       color="#f59e0b" 
       isVisible={selected} 
       minWidth={220} 
       minHeight={100} 
+=======
+    <NodeResizer
+      color="#f59e0b"
+      isVisible={selected}
+      minWidth={220}
+      minHeight={100}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
     />
     <div className={`
       w-full h-full min-w-[220px] min-h-[100px] bg-slate-900 border-2 rounded-lg shadow-xl overflow-hidden transition-all duration-200 group flex flex-col
@@ -38,9 +52,15 @@ const BaseNodeWrapper = ({
     `}>
       {/* Pop-out Info (Snapchat style) using NodeToolbar */}
       <NodeToolbar isVisible={selected} position={Position.Top} className="mb-2">
+<<<<<<< HEAD
          <div className="bg-slate-950 border border-amber-500/50 text-slate-200 px-3 py-2 rounded-lg shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-2">
            {toolbarContent || <span className="text-xs text-slate-400">Select to edit details</span>}
          </div>
+=======
+        <div className="bg-slate-950 border border-amber-500/50 text-slate-200 px-3 py-2 rounded-lg shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-2">
+          {toolbarContent || <span className="text-xs text-slate-400">Select to edit details</span>}
+        </div>
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       </NodeToolbar>
 
       {/* Header - Fixed Height */}
@@ -51,7 +71,11 @@ const BaseNodeWrapper = ({
         </div>
         {statusBadge}
       </div>
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       {/* Body - Flexible Height with Scroll if absolutely necessary, but hidden overflow by default */}
       <div className="p-3 flex-1 overflow-hidden flex flex-col relative">
         {children}
@@ -72,9 +96,15 @@ const ReliabilityStars = ({ score }: { score?: number }) => {
   return (
     <div className="flex gap-0.5" title={`Reliability: ${score}/5`}>
       {[1, 2, 3, 4, 5].map((i) => (
+<<<<<<< HEAD
         <div 
           key={i} 
           className={`w-1.5 h-1.5 rounded-full ${i <= score ? 'bg-emerald-400' : 'bg-slate-700'}`} 
+=======
+        <div
+          key={i}
+          className={`w-1.5 h-1.5 rounded-full ${i <= score ? 'bg-emerald-400' : 'bg-slate-700'}`}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         />
       ))}
     </div>
@@ -84,17 +114,29 @@ const ReliabilityStars = ({ score }: { score?: number }) => {
 export const NoteNode = memo(({ data, selected }: { data: NodeData; selected?: boolean }) => {
   return (
     <>
+<<<<<<< HEAD
       <NodeResizer 
         color="#3b82f6" 
         isVisible={selected} 
         minWidth={150} 
         minHeight={100} 
+=======
+      <NodeResizer
+        color="#3b82f6"
+        isVisible={selected}
+        minWidth={150}
+        minHeight={100}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       />
       <div className={`
         w-full h-full min-w-[150px] min-h-[100px] p-4 rounded-lg shadow-xl text-slate-900 font-medium text-sm transition-all overflow-hidden flex flex-col
         ${selected ? 'ring-2 ring-blue-400' : ''}
       `}
+<<<<<<< HEAD
       style={{ backgroundColor: data.noteColor || '#fef3c7' }} // Default yellow
+=======
+        style={{ backgroundColor: data.noteColor || '#fef3c7' }} // Default yellow
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       >
         <div className="flex items-center gap-2 mb-2 text-slate-700/50 uppercase text-[10px] font-bold shrink-0">
           <StickyNote className="w-3 h-3" />
@@ -104,7 +146,11 @@ export const NoteNode = memo(({ data, selected }: { data: NodeData; selected?: b
         <div className="whitespace-pre-wrap leading-relaxed font-handwriting overflow-y-auto custom-scrollbar flex-1">
           {data.label || 'Enter note...'}
         </div>
+<<<<<<< HEAD
          {/* Handles */}
+=======
+        {/* Handles */}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         <Handle type="target" position={Position.Top} className="!bg-slate-400/50 !w-2 !h-2" />
         <Handle type="source" position={Position.Bottom} className="!bg-slate-400/50 !w-2 !h-2" />
       </div>
@@ -113,11 +159,16 @@ export const NoteNode = memo(({ data, selected }: { data: NodeData; selected?: b
 });
 
 export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: boolean }) => {
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
   // DETERMINE SUB-TYPE STYLING
   const getSubtypeConfig = () => {
     switch (data.type) {
       case 'location':
+<<<<<<< HEAD
         return { 
           header: 'bg-emerald-600', 
           title: 'LOCATION', 
@@ -140,6 +191,30 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
           header: 'bg-blue-600', 
           title: 'EVENT', 
           icon: Calendar 
+=======
+        return {
+          header: 'bg-emerald-600',
+          title: 'LOCATION',
+          icon: MapPin
+        };
+      case 'evidence':
+        return {
+          header: 'bg-purple-600',
+          title: 'EVIDENCE',
+          icon: FileSearch
+        };
+      case 'communication':
+        return {
+          header: 'bg-red-500',
+          title: 'COMMUNICATION',
+          icon: Radio
+        };
+      default:
+        return {
+          header: 'bg-blue-600',
+          title: 'EVENT',
+          icon: Calendar
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         };
     }
   };
@@ -158,7 +233,11 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
 
   const openMap = (e: React.MouseEvent) => {
     e.stopPropagation();
+<<<<<<< HEAD
     if(data.coordinates) {
+=======
+    if (data.coordinates) {
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       window.open(`https://www.google.com/maps/search/?api=1&query=${data.coordinates.lat},${data.coordinates.lng}`, '_blank');
     }
   };
@@ -166,6 +245,7 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
   const Toolbar = () => (
     <div className="flex items-center gap-3">
       <div className="flex flex-col">
+<<<<<<< HEAD
          <span className="text-[10px] text-slate-400 uppercase">Reliability</span>
          <span className="text-sm font-bold text-emerald-400">{data.reliability ? `${data.reliability}/5 Verified` : 'Unverified'}</span>
       </div>
@@ -173,6 +253,15 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
       <div className="flex flex-col">
          <span className="text-[10px] text-slate-400 uppercase">Attachments</span>
          <span className="text-sm font-bold text-blue-400">{data.attachments?.length || 0} Files</span>
+=======
+        <span className="text-[10px] text-slate-400 uppercase">Reliability</span>
+        <span className="text-sm font-bold text-emerald-400">{data.reliability ? `${data.reliability}/5 Verified` : 'Unverified'}</span>
+      </div>
+      <div className="w-px h-6 bg-slate-800" />
+      <div className="flex flex-col">
+        <span className="text-[10px] text-slate-400 uppercase">Attachments</span>
+        <span className="text-sm font-bold text-blue-400">{data.attachments?.length || 0} Files</span>
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       </div>
     </div>
   );
@@ -180,6 +269,7 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
   const { lat, lng } = data.coordinates || { lat: 0, lng: 0 };
   const hasCoordinates = lat !== 0 || lng !== 0;
 
+<<<<<<< HEAD
   // Image Logic: Prioritize array, fall back to single legacy
   const displayImages = data.images && data.images.filter(i => i).length > 0 
     ? data.images.filter(i => i) 
@@ -190,6 +280,13 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
       selected={selected} 
       headerColor={config.header}
       title={config.title} 
+=======
+  return (
+    <BaseNodeWrapper
+      selected={selected}
+      headerColor={config.header}
+      title={config.title}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       icon={config.icon}
       statusBadge={<ReliabilityStars score={data.reliability} />}
       toolbarContent={<Toolbar />}
@@ -199,7 +296,11 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
         <div className="text-sm font-semibold text-slate-100 leading-tight line-clamp-2" title={data.label}>
           {data.label || 'Untitled Node'}
         </div>
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         {data.evidenceType && (
           <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-800 rounded text-[10px] uppercase font-bold text-slate-300 w-fit shrink-0">
             {getEvidenceIcon(data.evidenceType)}
@@ -216,6 +317,7 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
           )}
 
           {data.location && (
+<<<<<<< HEAD
              <div className="flex items-center gap-1.5 text-xs text-slate-400 shrink-0">
                <div className="w-3 text-center">📍</div>
                <span className="truncate">{data.location}</span>
@@ -237,12 +339,19 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
                   />
                 ))}
              </div>
+=======
+            <div className="flex items-center gap-1.5 text-xs text-slate-400 shrink-0">
+              <div className="w-3 text-center">📍</div>
+              <span className="truncate">{data.location}</span>
+            </div>
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
           )}
 
           {/* MAP SNAPSHOT (OpenStreetMap) */}
           {hasCoordinates && (
             <div className="w-full h-28 shrink-0 rounded bg-slate-800 border border-slate-700 overflow-hidden relative my-2 group/map">
               {/* Embed OSM via iframe */}
+<<<<<<< HEAD
               <iframe 
                 width="100%" 
                 height="100%" 
@@ -252,10 +361,22 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
                 marginWidth={0} 
                 loading="lazy"
                 src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.01}%2C${lat-0.01}%2C${lng+0.01}%2C${lat+0.01}&layer=mapnik&marker=${lat}%2C${lng}`} 
+=======
+              <iframe
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                scrolling="no"
+                marginHeight={0}
+                marginWidth={0}
+                loading="lazy"
+                src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&layer=mapnik&marker=${lat}%2C${lng}`}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
                 style={{ pointerEvents: 'none', filter: 'grayscale(0.3) contrast(1.1)' }}
                 title="Location Snapshot"
               />
               {/* Overlay for Dragging/Clicking */}
+<<<<<<< HEAD
               <div 
                   className="absolute inset-0 bg-transparent hover:bg-slate-900/10 transition-colors"
                   title="Map Preview (Coords Loaded)"
@@ -286,6 +407,36 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
           <div className="flex items-center gap-1 mt-auto pt-1 shrink-0">
              <Paperclip className="w-3 h-3 text-slate-500" />
              <span className="text-[10px] text-slate-500">{data.attachments.length} attachments</span>
+=======
+              <div
+                className="absolute inset-0 bg-transparent hover:bg-slate-900/10 transition-colors"
+                title="Map Preview (Coords Loaded)"
+              />
+              <div className="absolute bottom-0 right-0 px-2 py-0.5 bg-slate-950/80 text-[8px] text-slate-400 rounded-tl">
+                Lat: {lat.toFixed(3)}, Lng: {lng.toFixed(3)}
+              </div>
+            </div>
+          )}
+
+          {/* GIS Link Button */}
+          {hasCoordinates && (
+            <button
+              onClick={openMap}
+              className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-900/20 px-1.5 py-0.5 rounded border border-emerald-900/50 hover:bg-emerald-900/40 w-fit transition-colors shrink-0"
+              title="Open in Google Maps"
+            >
+              <Map className="w-3 h-3" />
+              <span>Open in Google Maps</span>
+              <ExternalLink className="w-2 h-2 ml-1" />
+            </button>
+          )}
+        </div>
+
+        {data.attachments && data.attachments.length > 0 && (
+          <div className="flex items-center gap-1 mt-auto pt-1 shrink-0">
+            <Paperclip className="w-3 h-3 text-slate-500" />
+            <span className="text-[10px] text-slate-500">{data.attachments.length} attachments</span>
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
           </div>
         )}
 
@@ -302,11 +453,19 @@ export const EventNode = memo(({ data, selected }: { data: NodeData; selected?: 
 });
 
 export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?: boolean }) => {
+<<<<<<< HEAD
   
   const getStatusStyles = (status?: PersonStatus, type?: string) => {
     // Handle Organization Override
     if (type === 'organization') {
         return { color: 'bg-slate-700', border: 'border-slate-500', icon: Building2, label: 'ORGANIZATION' };
+=======
+
+  const getStatusStyles = (status?: PersonStatus, type?: string) => {
+    // Handle Organization Override
+    if (type === 'organization') {
+      return { color: 'bg-slate-700', border: 'border-slate-500', icon: Building2, label: 'ORGANIZATION' };
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
     }
 
     switch (status) {
@@ -323,6 +482,7 @@ export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?:
 
   const Toolbar = () => (
     <div className="flex items-center gap-3">
+<<<<<<< HEAD
        {/* Tiny thumbnail in toolbar */}
        {data.image && <img src={data.image} alt="Thumb" className="w-8 h-8 rounded bg-slate-800 object-cover" />}
        <div className="flex flex-col">
@@ -335,16 +495,38 @@ export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?:
        <div className="flex flex-col">
          <span className="text-[10px] text-slate-400 uppercase">Aliases</span>
          <span className="text-sm font-bold text-slate-200">{data.aliases ? data.aliases.split(',').length : 0} Known</span>
+=======
+      {/* Tiny thumbnail in toolbar */}
+      {data.image && <img src={data.image} alt="Thumb" className="w-8 h-8 rounded bg-slate-800 object-cover" />}
+      <div className="flex flex-col">
+        <span className="text-[10px] text-slate-400 uppercase">Role</span>
+        <span className={`text-sm font-bold ${data.personStatus === 'suspect' ? 'text-red-400' : 'text-slate-200'}`}>
+          {styles.label}
+        </span>
+      </div>
+      <div className="w-px h-6 bg-slate-800" />
+      <div className="flex flex-col">
+        <span className="text-[10px] text-slate-400 uppercase">Aliases</span>
+        <span className="text-sm font-bold text-slate-200">{data.aliases ? data.aliases.split(',').length : 0} Known</span>
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       </div>
     </div>
   );
 
   return (
+<<<<<<< HEAD
     <BaseNodeWrapper 
       selected={selected} 
       headerColor={styles.color}
       borderColor={styles.border}
       title={styles.label} 
+=======
+    <BaseNodeWrapper
+      selected={selected}
+      headerColor={styles.color}
+      borderColor={styles.border}
+      title={styles.label}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
       icon={StatusIcon}
       toolbarContent={<Toolbar />}
     >
@@ -352,6 +534,7 @@ export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?:
         <div className="flex items-start gap-3 shrink-0">
           {/* IMAGE DISPLAY */}
           {data.image ? (
+<<<<<<< HEAD
             <img 
               src={data.image} 
               alt={data.label} 
@@ -360,6 +543,16 @@ export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?:
           ) : (
             <div className="w-12 h-12 rounded bg-slate-800 flex items-center justify-center text-slate-600 border border-slate-700 shrink-0">
                {data.type === 'organization' ? <Building2 className="w-6 h-6" /> : <User className="w-6 h-6" />}
+=======
+            <img
+              src={data.image}
+              alt={data.label}
+              className="w-12 h-12 rounded bg-slate-800 object-cover border border-slate-600 shrink-0"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded bg-slate-800 flex items-center justify-center text-slate-600 border border-slate-700 shrink-0">
+              {data.type === 'organization' ? <Building2 className="w-6 h-6" /> : <User className="w-6 h-6" />}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
             </div>
           )}
 
@@ -382,12 +575,21 @@ export const PersonNode = memo(({ data, selected }: { data: NodeData; selected?:
         )}
 
         <div className="flex-1 min-h-0">
+<<<<<<< HEAD
            {data.date && (
              <div className="flex items-center gap-1.5 text-xs text-amber-300 mt-1 truncate">
                <AlertCircle className="w-3 h-3 shrink-0" />
                <span>Last Sighted: {data.date.replace('T', ' ')}</span>
              </div>
            )}
+=======
+          {data.date && (
+            <div className="flex items-center gap-1.5 text-xs text-amber-300 mt-1 truncate">
+              <AlertCircle className="w-3 h-3 shrink-0" />
+              <span>Last Sighted: {data.date.replace('T', ' ')}</span>
+            </div>
+          )}
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
         </div>
 
         {/* Source: Truncated to 2 lines */}
@@ -449,7 +651,11 @@ export const DeletableEdge = ({
               {label as string}
             </div>
           )}
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 09e64f1be13e96c901a7a53c5cd4d4e9a0dab8d6
           {/* Delete Button */}
           <button
             className="w-5 h-5 bg-slate-900 border border-slate-600 rounded-full text-slate-400 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center justify-center transition-all shadow-md z-50 active:scale-95"

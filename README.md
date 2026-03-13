@@ -2,7 +2,7 @@
 
 **IntelBoard** is a professional-grade investigation storyboard and link analysis tool built with **React** and **React Flow**. Designed for intelligence analysts and law enforcement, it allows users to visually map complex cases, connect entities, and generate automated insights using a robust **Offline Logic Engine**.
 
-![IntelBoard Dashboard](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop)
+![IntelBoard Dashboard](./assets/screenshot.png)
 
 ## 🚀 Key Features
 

@@ -47,7 +47,8 @@ export interface NodeData {
   reliability?: number; // 1-5 scale
   
   // Media & GIS
-  image?: string; // Base64 string for profile picture
+  image?: string; // Primary image (Base64) - kept for backward compatibility
+  images?: string[]; // Array of up to 4 images
   attachments?: MediaAttachment[];
   coordinates?: Coordinates;
   

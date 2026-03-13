@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Node, Edge } from '@xyflow/react';
 import { NodeData, PersonStatus, EvidenceType, NodeType } from '../types';
-import { X, Save, Trash2, Link2, Type, AlertCircle, Shield, Star, UserCheck, ImagePlus, Map, Video, Mic, Paperclip, Layout } from 'lucide-react';
+import { X, Save, Trash2, Link2, Type, AlertCircle, Shield, Star, UserCheck, ImagePlus, Map, Video, Mic, Paperclip, Layout, Plus } from 'lucide-react';
 
 interface EditorPanelProps {
   selectedNode: Node | null;
@@ -23,6 +23,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
   deleteEdge 
 }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
+  // Refs for the 4 separate upload slots
+  const slotRefs = useRef<(HTMLInputElement | null)[]>([]);
   
   // Form state for Nodes
   const [nodeFormData, setNodeFormData] = useState<NodeData>({
@@ -37,6 +39,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     reliability: 0,
     coordinates: { lat: 0, lng: 0 },
     image: '',
+    images: ['', '', '', ''], // Initialize 4 slots
     attachments: [],
     noteColor: '#fef3c7',
     type: 'event' // default for EventNodes
@@ -51,6 +54,15 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
   // Sync state when selection changes
   useEffect(() => {
     if (selectedNode) {
+      // Ensure images array has 4 slots
+      let loadedImages = (selectedNode.data.images as string[]) || [];
+      // Backward compatibility: if data.image exists but images array is empty, put it in slot 0
+      if (loadedImages.length === 0 && selectedNode.data.image) {
+        loadedImages = [selectedNode.data.image as string];
+      }
+      // Pad to 4
+      while (loadedImages.length < 4) loadedImages.push('');
+
       setNodeFormData({
         label: selectedNode.data.label as string || '',
         date: (selectedNode.data.date as string) || '',
@@ -64,6 +76,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         role: (selectedNode.data.role as string) || '',
         coordinates: (selectedNode.data.coordinates as any) || { lat: 0, lng: 0 },
         image: (selectedNode.data.image as string) || '',
+        images: loadedImages,
         attachments: (selectedNode.data.attachments as any[]) || [],
         noteColor: (selectedNode.data.noteColor as string) || '#fef3c7',
         type: (selectedNode.data.type as string) || 'event'
@@ -107,15 +120,38 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     updateNode('coordinates', newCoords);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index?: number) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateNode('image', reader.result as string);
+        const result = reader.result as string;
+        
+        if (index !== undefined) {
+          // Handle Multi-Image Upload
+          const newImages = [...(nodeFormData.images || ['', '', '', ''])];
+          newImages[index] = result;
+          
+          updateNode('images', newImages);
+          
+          // Sync primary image with first non-empty slot for backward compat
+          const firstImage = newImages.find(img => img !== '') || '';
+          updateNode('image', firstImage);
+        } else {
+          // Legacy single upload (Person node)
+          updateNode('image', result);
+        }
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = [...(nodeFormData.images || ['', '', '', ''])];
+    newImages[index] = '';
+    updateNode('images', newImages);
+    const firstImage = newImages.find(img => img !== '') || '';
+    updateNode('image', firstImage);
   };
 
   // Mock function for media attachments since we don't have backend storage for videos
@@ -211,7 +247,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
               </>
             ) : (
               <>
-                {/* Image Upload for Persons */}
+                {/* Image Upload for Persons (Single) */}
                 {selectedNode.type === NodeType.PERSON && (
                   <div className="flex items-center gap-4 p-3 bg-slate-800/50 rounded border border-slate-700">
                      <div 
@@ -223,7 +259,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                         ) : (
                           <ImagePlus className="w-6 h-6 text-slate-500 group-hover:text-amber-500" />
                         )}
-                        <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                        <input type="file" ref={imageInputRef} onChange={(e) => handleImageUpload(e)} accept="image/*" className="hidden" />
                      </div>
                      <div className="flex-1">
                         <div className="text-xs font-bold text-slate-300">Subject Photo</div>
@@ -250,6 +286,62 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                          <option value="communication">Communication Log</option>
                        </select>
                    </div>
+                )}
+
+                {/* Multi-Image Upload for Events */}
+                {selectedNode.type === NodeType.EVENT && (
+                  <div>
+                    <label className="block text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wide flex items-center gap-2">
+                       <ImagePlus className="w-3 h-3" /> Evidence / Site Photos
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[0, 1, 2, 3].map((index) => (
+                        <div key={index} className="relative group">
+                           <div 
+                              className={`
+                                h-20 rounded border flex items-center justify-center cursor-pointer transition-all overflow-hidden
+                                ${nodeFormData.images && nodeFormData.images[index] 
+                                  ? 'bg-slate-900 border-slate-600 hover:border-red-500' 
+                                  : 'bg-slate-800/50 border-slate-700 border-dashed hover:bg-slate-800 hover:border-amber-500'}
+                              `}
+                              onClick={() => {
+                                if (nodeFormData.images && nodeFormData.images[index]) return; // Don't trigger upload if image exists (use delete btn)
+                                slotRefs.current[index]?.click();
+                              }}
+                           >
+                              {nodeFormData.images && nodeFormData.images[index] ? (
+                                <img src={nodeFormData.images[index]} alt={`Slot ${index}`} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="flex flex-col items-center gap-1">
+                                  <Plus className="w-4 h-4 text-slate-500" />
+                                  <span className="text-[9px] text-slate-500">Add Photo</span>
+                                </div>
+                              )}
+                              
+                              {/* Hidden Input */}
+                              <input 
+                                type="file" 
+                                ref={(el) => { slotRefs.current[index] = el; }} 
+                                onChange={(e) => handleImageUpload(e, index)} 
+                                accept="image/*" 
+                                className="hidden" 
+                              />
+                           </div>
+                           
+                           {/* Remove Button Overlay */}
+                           {nodeFormData.images && nodeFormData.images[index] && (
+                             <div 
+                                className="absolute inset-0 bg-red-900/80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
+                                onClick={() => removeImage(index)}
+                             >
+                               <Trash2 className="w-5 h-5 text-white" />
+                             </div>
+                           )}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-[10px] text-slate-500 mt-1 italic">Click empty slot to upload. Hover to delete.</div>
+                  </div>
                 )}
 
                 <div>
@@ -407,24 +499,30 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                       placeholder="Address / Area Name"
                     />
                     <div className="flex gap-2">
-                       <input
-                        type="number"
-                        name="lat"
-                        value={nodeFormData.coordinates?.lat}
-                        onChange={handleCoordinatesChange}
-                        className="w-1/2 bg-slate-950 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder:text-slate-600"
-                        placeholder="Latitude"
-                        step="0.000001"
-                      />
-                      <input
-                        type="number"
-                        name="lng"
-                        value={nodeFormData.coordinates?.lng}
-                        onChange={handleCoordinatesChange}
-                        className="w-1/2 bg-slate-950 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder:text-slate-600"
-                        placeholder="Longitude"
-                        step="0.000001"
-                      />
+                       <div className="flex-1 relative">
+                          <label className="absolute -top-1.5 left-2 bg-slate-900 px-1 text-[8px] text-slate-500 uppercase font-bold">Lat</label>
+                          <input
+                            type="number"
+                            name="lat"
+                            value={nodeFormData.coordinates?.lat}
+                            onChange={handleCoordinatesChange}
+                            className="w-full bg-slate-950 border border-slate-700 rounded px-2 py-2 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500"
+                            placeholder="0.000000"
+                            step="0.000001"
+                          />
+                       </div>
+                       <div className="flex-1 relative">
+                          <label className="absolute -top-1.5 left-2 bg-slate-900 px-1 text-[8px] text-slate-500 uppercase font-bold">Long</label>
+                          <input
+                            type="number"
+                            name="lng"
+                            value={nodeFormData.coordinates?.lng}
+                            onChange={handleCoordinatesChange}
+                            className="w-full bg-slate-950 border border-slate-700 rounded px-2 py-2 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500"
+                            placeholder="0.000000"
+                            step="0.000001"
+                          />
+                       </div>
                     </div>
                   </div>
                 )}

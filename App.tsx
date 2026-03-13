@@ -550,25 +550,109 @@ const InvestigationCanvas = ({ onLogout }: { onLogout: () => void }) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const result = JSON.parse(event.target?.result as string);
-        if (result.nodes && result.edges) {
-          takeSnapshot();
-          setNodes(result.nodes);
-          setEdges(result.edges);
-          if (result.investigationType) setManualMode(result.investigationType);
-          
-          // Clear old analysis to avoid data mismatch, user can hit "Report" to regen
+        const rawContent = event.target?.result as string;
+        const result = JSON.parse(rawContent);
+
+        takeSnapshot();
+        let loadedNodes: Node[] = [];
+        let loadedEdges: Edge[] = [];
+
+        // STRATEGY: Detect Format
+
+        // 1. Native IntelBoard Format
+        if (result.nodes && Array.isArray(result.nodes) && result.nodes.length > 0 && result.nodes[0].position) {
+            loadedNodes = result.nodes;
+            loadedEdges = result.edges || [];
+            if (result.investigationType) setManualMode(result.investigationType);
+        }
+        
+        // 2. External Sketch/Graph Format (Adapter)
+        else if (result.nodes && (result.sketch || result.nodes[0].x !== undefined || result.nodes[0].nodeType)) {
+            // Map User's Sketch Format to IntelBoard Format
+            loadedNodes = result.nodes.map((n: any) => {
+              // Map Node Type
+              let mappedType = NodeType.EVENT;
+              let subType = 'event';
+              let nodeData: any = {};
+
+              // Extract Properties (Merge top level and nodeProperties)
+              const props = { ...n, ...(n.nodeProperties || {}) };
+
+              // Type Mapping logic
+              const rawType = (n.nodeType || '').toLowerCase();
+              
+              if (['individual', 'person', 'suspect', 'victim'].includes(rawType)) {
+                 mappedType = NodeType.PERSON;
+                 nodeData = {
+                   role: props.role || 'unknown',
+                   personStatus: 'unknown',
+                   image: props.src || props.nodeImage, // Handle image source mapping
+                   aliases: props.aliases
+                 };
+              } else if (rawType === 'location') {
+                 mappedType = NodeType.EVENT;
+                 subType = 'location';
+                 nodeData = { 
+                   location: props.nodeLabel || props.address,
+                   coordinates: { lat: props.latitude || 0, lng: props.longitude || 0 }
+                 };
+              } else if (['bankaccount', 'phone', 'file'].includes(rawType)) {
+                 mappedType = NodeType.EVENT;
+                 subType = rawType === 'phone' ? 'communication' : 'evidence';
+                 nodeData = {
+                   evidenceType: 'digital',
+                   description: props.description || props.filename || props.number
+                 };
+              }
+
+              // Data Construction
+              return {
+                id: n.id || getId(),
+                type: mappedType,
+                position: { x: n.x || 0, y: n.y || 0 }, // Convert flat x,y to position object
+                data: {
+                  label: props.nodeLabel || props.label || 'Unknown Node',
+                  date: props.created_at || props.date,
+                  evidenceSource: 'External Import',
+                  type: subType, // IntelBoard internal subtype
+                  ...nodeData // Spread specific mapped data
+                }
+              };
+            });
+
+            // Map Edges
+            if (result.edges) {
+               loadedEdges = result.edges.map((e: any) => ({
+                 id: e.id || `e_${Math.random()}`,
+                 source: e.source,
+                 target: e.target,
+                 label: e.label,
+                 type: 'deletable', // Ensure type matches app edge component
+                 animated: true,
+                 style: { stroke: '#64748b', strokeWidth: 2 }
+               }));
+            }
+        } else {
+             alert('Unknown JSON format. Attempting best-effort load...');
+             // Fallback attempt
+             loadedNodes = result.nodes || [];
+             loadedEdges = result.edges || [];
+        }
+
+        if (loadedNodes.length > 0) {
+          setNodes(loadedNodes);
+          setEdges(loadedEdges);
           setAnalysis(null);
           setShowAnalysisPanel(false);
-          
           setSimulationToast({ message: 'Case File Loaded Successfully', type: 'success' });
           setTimeout(() => setSimulationToast(null), 3000);
         } else {
-          alert('Invalid case file format');
+          alert('No valid nodes found in file.');
         }
+
       } catch (err) {
-        console.error(err);
-        alert('Failed to parse case file');
+        console.error("File Load Error:", err);
+        alert('Failed to parse case file. Check console for details.');
       }
     };
     reader.readAsText(file);
